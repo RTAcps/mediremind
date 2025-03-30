@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mediremind.DTO.MedicationDTO;
@@ -18,11 +22,15 @@ public class MedicationService {
         this.medicationRepository = medicationRepository;
     }
 
-    public List<MedicationDTO> getAllMedications() {
-        return medicationRepository.findAll()
-            .stream()
-            .map(med -> new MedicationDTO(med.getId(), med.getName(), med.getDosage(), med.getFrequency()))
+    public Page<MedicationDTO> getAllMedications(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Medication> medicationPage = medicationRepository.findAll(pageable);
+
+        List<MedicationDTO> medicationDTOs = medicationPage.getContent().stream()
+            .map(medication -> new MedicationDTO(medication.getId(), medication.getName(), medication.getDosage(), medication.getFrequency()))
             .collect(Collectors.toList());
+
+        return new PageImpl<>(medicationDTOs, pageable, medicationPage.getTotalElements());
     }
 
     public Optional<MedicationDTO> getMedicationById(String id) {
