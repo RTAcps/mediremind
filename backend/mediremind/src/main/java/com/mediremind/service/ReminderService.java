@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mediremind.DTO.ReminderDTO;
@@ -18,11 +22,15 @@ public class ReminderService {
         this.reminderRepository = reminderRepository;
     }
 
-    public List<ReminderDTO> getAllReminders() {
-        return reminderRepository.findAll()
-            .stream()
+    public Page<ReminderDTO> getAllReminders(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Reminder> reminderPage = reminderRepository.findAll(pageable);
+
+        List<ReminderDTO> ReminderDTOs = reminderPage.getContent().stream()
             .map(reminder -> new ReminderDTO(reminder.getId(), reminder.getReminderTime(), reminder.isSent()))
             .collect(Collectors.toList());
+
+        return new PageImpl<>(ReminderDTOs, pageable, reminderPage.getTotalElements());
     }
 
     public Optional<ReminderDTO> getReminderById(String id) {
