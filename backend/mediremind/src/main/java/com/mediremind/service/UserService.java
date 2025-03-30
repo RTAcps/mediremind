@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mediremind.DTO.UserDTO;
@@ -18,11 +22,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
-            .stream()
+    public Page<UserDTO> getAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        List<UserDTO> userDTOs = userPage.getContent().stream()
             .map(user -> new UserDTO(user.getId(), user.getName(), user.getEmail()))
             .collect(Collectors.toList());
+
+        return new PageImpl<>(userDTOs, pageable, userPage.getTotalElements());
     }
 
     public Optional<UserDTO> getUserById(String id) {
