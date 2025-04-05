@@ -4,7 +4,7 @@ import { IEntity } from '@models/entity-interface';
 import { Observable } from 'rxjs';
 
 const API_BASE = 'http://localhost:8080/api';
-
+  
 @Injectable({
   providedIn: 'root'
 })
