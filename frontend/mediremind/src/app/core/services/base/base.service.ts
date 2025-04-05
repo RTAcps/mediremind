@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { IEntity } from '@models/entity-interface';
 import { Observable } from 'rxjs';
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'http://localhost:8080/api/v1';
   
 @Injectable({
   providedIn: 'root'
