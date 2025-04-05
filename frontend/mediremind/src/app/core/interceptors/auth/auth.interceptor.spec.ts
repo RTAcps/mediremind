@@ -1,8 +1,7 @@
+import { HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
-import { authInterceptor } from './auth.interceptor';
-import { HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { of } from 'rxjs';
+import { authInterceptor } from './auth.interceptor';
 
 describe('authInterceptor', () => {
   let mockHandler: jest.Mocked<HttpHandler>;

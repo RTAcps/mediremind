@@ -19,5 +19,5 @@ module.exports = {
         ["./node_modules/jest-html-reporter", {
             "pageTitle": "Test Report"
         }]
-      ]
+    ]
 };
