@@ -29,7 +29,7 @@ describe('errorInterceptor', () => {
     });
   });
 
-  it('should handle 401 error and navigate to login', (done) => {
+  it('should handle 400 error and show system error message', (done) => {
     const req = new HttpRequest('GET', '/test');
     const errorResponse = new HttpErrorResponse({ status: 400 });
     mockHandler.handle.mockReturnValue(throwError(() => errorResponse));
