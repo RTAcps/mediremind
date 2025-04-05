@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { LoadingService } from '@services/loading/loading.service';
 import { loadingInterceptor } from './loading.interceptor';
@@ -19,6 +19,7 @@ describe('LoadingInterceptor', () => {
             providers: [
                 { provide: LoadingService, useValue: loadingServiceMock },
                 { provide: HTTP_INTERCEPTORS, useValue: loadingInterceptor, multi: true },
+                provideHttpClientTesting(),
             ],
         });
 

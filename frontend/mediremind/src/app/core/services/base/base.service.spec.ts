@@ -5,12 +5,15 @@ import { BaseService } from './base.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
+import { Injectable } from '@angular/core';
 
 class TestEntity implements IEntity {
   id!: string;
 }
 
+@Injectable()
 class TestService extends BaseService<TestEntity> {
   protected endpoint = 'test-entities';
 }
@@ -22,7 +25,7 @@ describe('BaseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestService],
+      providers: [TestService, provideHttpClientTesting()],
     });
     service = TestBed.inject(TestService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -43,7 +46,7 @@ describe('BaseService', () => {
       expect(entities).toEqual(mockEntities);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/test-entities');
+    const req = httpMock.expectOne('http://localhost:8080/api/v1/test-entities');
     expect(req.request.method).toBe('GET');
     req.flush(mockEntities);
   });
@@ -55,7 +58,7 @@ describe('BaseService', () => {
       expect(entity).toEqual(mockEntity);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/test-entities/1');
+    const req = httpMock.expectOne('http://localhost:8080/api/v1/test-entities/1');
     expect(req.request.method).toBe('GET');
     req.flush(mockEntity);
   });
@@ -67,7 +70,7 @@ describe('BaseService', () => {
       expect(entity).toEqual(newEntity);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/test-entities');
+    const req = httpMock.expectOne('http://localhost:8080/api/v1/test-entities');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(newEntity);
     req.flush(newEntity);
@@ -80,7 +83,7 @@ describe('BaseService', () => {
       expect(entity).toEqual(updatedEntity);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/test-entities/1');
+    const req = httpMock.expectOne('http://localhost:8080/api/v1/test-entities/1');
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(updatedEntity);
     req.flush(updatedEntity);
@@ -91,7 +94,7 @@ describe('BaseService', () => {
       expect(response).toBeUndefined();
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/test-entities/1');
+    const req = httpMock.expectOne('http://localhost:8080/api/v1/test-entities/1');
     expect(req.request.method).toBe('DELETE');
     req.flush(null);
   });

@@ -4,6 +4,7 @@ import { MedicationService } from './medication.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { Medication } from '@models/entity-interface';
 
@@ -14,7 +15,7 @@ describe('MedicationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MedicationService],
+      providers: [MedicationService, provideHttpClientTesting()],
     });
     service = TestBed.inject(MedicationService);
     httpMock = TestBed.inject(HttpTestingController);

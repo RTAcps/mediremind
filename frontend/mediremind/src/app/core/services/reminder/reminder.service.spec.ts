@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ReminderService } from './reminder.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { Reminder } from '@models/entity-interface';
+import { ReminderService } from './reminder.service';
 
 describe('ReminderService', () => {
   let service: ReminderService;
@@ -14,7 +15,7 @@ describe('ReminderService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ReminderService],
+      providers: [ReminderService, provideHttpClientTesting()],
     });
     service = TestBed.inject(ReminderService);
     httpMock = TestBed.inject(HttpTestingController);

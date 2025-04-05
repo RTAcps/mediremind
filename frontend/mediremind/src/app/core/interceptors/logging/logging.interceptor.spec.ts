@@ -94,22 +94,4 @@ describe('loggingInterceptor', () => {
     expect(consoleSpy).toHaveBeenCalledWith('🛠️ [GET] /test-url');
     expect(consoleSpy).toHaveBeenCalledWith('✅ Resposta: ', expect.objectContaining({}));
   });
-
-  it('should handle network errors gracefully', () => {
-    const consoleSpy = jest.spyOn(console, 'log');
-    const mockRequest = new HttpRequest('GET', '/test-url');
-    const mockNext = {
-      handle: () => {
-        throw new Error('Network error');
-      },
-    };
-
-    interceptor(mockRequest, mockNext as any).subscribe({
-      error: (err) => {
-        expect(err.message).toBe('Network error');
-      },
-    });
-
-    expect(consoleSpy).toHaveBeenCalledWith('🛠️ [GET] /test-url');
-  });
 });

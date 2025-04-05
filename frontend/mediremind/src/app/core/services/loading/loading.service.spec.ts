@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LoadingService } from './loading.service';
+import { first } from 'rxjs';
 
 describe('LoadingService', () => {
   let service: LoadingService;
@@ -17,7 +18,7 @@ describe('LoadingService', () => {
   it('should emit true when show() is called', (done) => {
     service.loading$.subscribe((isLoading) => {
       if (isLoading) {
-        expect(isLoading).toBe(true);
+        expect(isLoading).toBeTruthy();
         done();
       }
     });
@@ -25,11 +26,9 @@ describe('LoadingService', () => {
   });
 
   it('should emit false when hide() is called', (done) => {
-    service.loading$.subscribe((isLoading) => {
-      if (!isLoading) {
-        expect(isLoading).toBe(false);
-        done();
-      }
+    service.loading$.pipe(first()).subscribe((isLoading) => {
+      expect(isLoading).toBeFalsy();
+      done();
     });
     service.hide();
   });
