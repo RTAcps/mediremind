@@ -70,9 +70,7 @@ describe('loggingInterceptor', () => {
 
     interceptor(mockRequest, mockNext as any).subscribe((response) => {
       if (response instanceof HttpResponse) {
-        if (response instanceof HttpResponse) {
-          expect(response.body).toEqual(mockResponse);
-        }
+        expect(response.body).toEqual(mockResponse);
       }
     });
 
