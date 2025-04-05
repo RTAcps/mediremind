@@ -16,12 +16,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         router.navigate(['/login']);
       } else if (err.status === 403) {
         errorMsg = 'Você não tem permissão para acessar este recurso.';
-      } else if (err.status >= 400 && (err.status !== 401 || err.status !== 403)) {
-        errorMsg = 'Houve um erro no sistema, contate o administrador.';
       } else if (err.status >= 500) {
         errorMsg = 'Erro no servidor. Por favor, tente mais tarde.';
-      } else {
-        errorMsg;
+      } else if (err.status >= 400) {
+        errorMsg = 'Houve um erro no sistema, contate o administrador.';
       }
 
       Swal.fire({
