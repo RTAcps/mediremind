@@ -29,7 +29,7 @@ export class HeaderComponent {
     this.router.navigate(['/medication']);
   }
   
-  goToRegister() {
-    this.router.navigate(['/register']);
+  goToReminder() {
+    this.router.navigate(['/reminder']);
   }
 }

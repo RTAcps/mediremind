@@ -36,14 +36,14 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
-//   {
-//     path: 'reminders',
-//     loadComponent: () =>
-//       import('./features/reminders/reminders.component').then(
-//         (m) => m.RemindersComponent
-//       ),
-//     canActivate: [authGuard],
-//   },
+  {
+    path: 'reminder',
+    loadComponent: () =>
+      import('./features/reminder/reminder.component').then(
+        (m) => m.ReminderComponent
+      ),
+    canActivate: [authGuard],
+  },
 //   {
 //     path: 'unauthorized',
 //     loadComponent: () =>

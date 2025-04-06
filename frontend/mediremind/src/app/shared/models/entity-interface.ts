@@ -21,7 +21,7 @@ export interface Medication extends IEntity {
 export interface Reminder extends IEntity {
   userId: string;
   medicationId: string;
-  dateTime: string;
+  reminderTime: string;
 }
 
 export interface LoginResponse {
