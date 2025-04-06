@@ -1,30 +1,42 @@
+
 <div class="home-container">
-    <h1>Medicamentos para hoje</h1>
-    <ng-container *ngIf="medications$ | async as medications">
-      <div *ngIf="medications.length; else noMeds">
-        <ul>
-          <li *ngFor="let medication of medications">
-            <strong>{{ medication.name }}</strong> - Dosagem: {{ medication.dosage }}, Frequência: {{ medication.frequency }}
-          </li>
-        </ul>
-      </div>
-      <ng-template #noMeds>
-        <p>Nenhum medicamento encontrado.</p>
-      </ng-template>
-    </ng-container>
-  
-    <h2>Lembretes para hoje</h2>
-    <ng-container *ngIf="reminders$ | async as reminders">
-      <div *ngIf="reminders.length; else noReminders">
-        <ul>
-          <li *ngFor="let reminder of reminders">
-            <strong>Medicamento:</strong> {{ reminder.medicationId }} – Horário: {{ reminder.dateTime | date:'shortTime' }}
-          </li>
-        </ul>
-      </div>
-      <ng-template #noReminders>
-        <p>Nenhum lembrete encontrado.</p>
-      </ng-template>
-    </ng-container>
+  <div class="dashboard-columns">
+    <!-- Coluna de Medicamentos -->
+    <div class="column">
+      <h2>Medicamentos para hoje</h2>
+      <ng-container *ngIf="medications$ | async as medications">
+        <div *ngIf="medications.length; else noMeds">
+          <ul>
+            <li *ngFor="let medication of medications">
+              <strong>{{ medication.name }}</strong> - Dosagem: {{ medication.dosage }}, Frequência: {{ medication.frequency }}
+            </li>
+          </ul>
+        </div>
+        <ng-template #noMeds>
+          <p class="no-data-message">Nenhum medicamento encontrado.</p>
+        </ng-template>
+      </ng-container>
+    </div>
+
+    <!-- Coluna de Lembretes -->
+    <div class="column">
+      <h2>Lembretes para hoje</h2>
+      <ng-container *ngIf="reminders$ | async as reminders">
+        <div *ngIf="reminders.length; else noReminders">
+          <ul>
+            <li *ngFor="let reminder of reminders">
+              <strong>Medicamento:</strong> {{ reminder.medicationId }} – Horário: {{ reminder.dateTime | date:'shortTime' }}
+            </li>
+          </ul>
+        </div>
+        <ng-template #noReminders>
+          <p class="no-data-message">Nenhum lembrete encontrado.</p>
+        </ng-template>
+      </ng-container>
+    </div>
   </div>
-  
+
+  <div class="center">
+    <img src="Logo_text_bg.png" alt="Logo" class="logo"/>
+  </div>
+</div>
