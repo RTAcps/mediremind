@@ -21,6 +21,7 @@
       "@interceptors/*": ["core/interceptors/*"],
       "@services/*": ["core/services/*"],
       "@components/*": ["shared/components/*"],
+      "@auth/*": ["features/auth/*"],
       "@pipes/*": ["shared/pipes/*"],
       "@models/*": ["shared/models/*"],
       "@shared/*": ["shared/*"]
