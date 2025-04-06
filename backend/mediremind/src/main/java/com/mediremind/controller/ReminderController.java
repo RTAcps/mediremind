@@ -30,9 +30,10 @@ public class ReminderController {
 
     @GetMapping
     @Operation(summary = "Search for all schedule medications reminders")
-    public Page<ReminderDTO> getUsers(@RequestParam(defaultValue = "0") int page, 
+    public Page<ReminderDTO> getUsers(@RequestParam(required = false) String userId,
+    								  @RequestParam(defaultValue = "0") int page, 
             					  	  @RequestParam(defaultValue = "10") int size) {
-    	return reminderService.getAllReminders(page, size);
+    	return reminderService.getAllReminders(userId, page, size);
 	}
 
     @GetMapping("/{id}")

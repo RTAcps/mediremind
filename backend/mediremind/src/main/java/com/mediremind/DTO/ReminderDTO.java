@@ -4,13 +4,17 @@ import java.time.LocalDateTime;
 
 public class ReminderDTO {
     private String id;
+    private String userId;
+    private String medicationId;
     private LocalDateTime reminderTime;
     private boolean sent;
 
-    public ReminderDTO() {}
+	public ReminderDTO() {}
 
-    public ReminderDTO(String id, LocalDateTime reminderTime, boolean sent) {
+    public ReminderDTO(String id, String userId, String medicationId, LocalDateTime reminderTime, boolean sent) {
         this.id = id;
+        this.userId = userId;
+        this.medicationId = medicationId;
         this.reminderTime = reminderTime;
         this.sent = sent;
     }
@@ -23,6 +27,23 @@ public class ReminderDTO {
 		this.id = id;
 	}
 
+
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getMedicationId() {
+		return medicationId;
+	}
+
+	public void setMedicationId(String medicationId) {
+		this.medicationId = medicationId;
+	}
+	
 	public LocalDateTime getReminderTime() {
 		return reminderTime;
 	}
