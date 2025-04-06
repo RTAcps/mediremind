@@ -1,0 +1,67 @@
+<div class="login-container">
+  <img src="Logo_full.jpg" alt="Logo" class="logo" />
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Login</h2>
+
+    <div>
+      <label>Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Digite seu email"
+        />
+        @if (form.controls['email'].invalid && form.controls['email'].touched) {
+          <div
+            >
+            @if (form.controls['email'].errors?.['required']) {
+              <div>
+                @if (form.controls['password'].touched || submitted) {
+                  <div>
+                    Email é obrigatório
+                  </div>
+                }
+              </div>
+            }
+            @if (form.controls['email'].errors?.['email']) {
+              <div>
+                Email inválido
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <label>Senha</label>
+        <input
+          type="password"
+          formControlName="password"
+          title="Digite sua senha"
+          placeholder="Digite sua senha"
+          />
+          @if (form.controls['password'].errors?.['required']) {
+            <div>
+              @if (form.controls['password'].touched || submitted) {
+                <div>
+                  Senha é obrigatória
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        @if (errorMessage) {
+          <div class="error">
+            {{ errorMessage }}
+          </div>
+        }
+
+        <button type="submit" [disabled]="form.invalid">Entrar</button>
+
+        <p class="register-link">
+          Não tem uma conta?
+          <button type="button" (click)="goToRegister()">Registrar</button>
+        </p>
+      </form>
+    </div>
