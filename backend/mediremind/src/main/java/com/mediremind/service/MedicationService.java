@@ -22,35 +22,44 @@ public class MedicationService {
         this.medicationRepository = medicationRepository;
     }
 
-    public Page<MedicationDTO> getAllMedications(int page, int size) {
+    public Page<MedicationDTO> getAllMedications(String userId, int page, int size) {
+        if (userId != null) {
+            List<Medication> usersById = medicationRepository.findByUserId(userId);
+            List<MedicationDTO> medicationDTOs = usersById.stream()
+                .map(medication -> new MedicationDTO(medication.getId(), medication.getUserId(), medication.getName(), medication.getDosage(), medication.getTimer(), medication.getFrequency()))
+                .collect(Collectors.toList());
+
+            return new PageImpl<>(medicationDTOs, PageRequest.of(page, size), medicationDTOs.size());
+        }
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Medication> medicationPage = medicationRepository.findAll(pageable);
 
         List<MedicationDTO> medicationDTOs = medicationPage.getContent().stream()
-            .map(medication -> new MedicationDTO(medication.getId(), medication.getName(), medication.getDosage(), medication.getFrequency()))
-            .collect(Collectors.toList());
+                .map(medication -> new MedicationDTO(medication.getId(), medication.getUserId(), medication.getName(), medication.getDosage(), medication.getTimer(), medication.getFrequency()))
+                .collect(Collectors.toList());
 
-        return new PageImpl<>(medicationDTOs, pageable, medicationPage.getTotalElements());
+        return new PageImpl<>(medicationDTOs, PageRequest.of(page, size), medicationDTOs.size());
     }
 
     public Optional<MedicationDTO> getMedicationById(String id) {
         return medicationRepository.findById(id)
-            .map(med -> new MedicationDTO(med.getId(), med.getName(), med.getDosage(), med.getFrequency()));
+            .map(medication -> new MedicationDTO(medication.getId(), medication.getUserId(), medication.getName(), medication.getDosage(), medication.getTimer(), medication.getFrequency()));
     }
 
     public MedicationDTO createMedication(Medication medication) {
-        Medication savedMed = medicationRepository.save(medication);
-        return new MedicationDTO(savedMed.getId(), savedMed.getName(), savedMed.getDosage(), savedMed.getFrequency());
+        Medication savedMedication = medicationRepository.save(medication);
+        return new MedicationDTO(savedMedication.getId(), savedMedication.getUserId(), savedMedication.getName(), savedMedication.getDosage(), savedMedication.getTimer(), savedMedication.getFrequency());
     }
 
     public Optional<MedicationDTO> updateMedication(String id, Medication medDetails) {
         return medicationRepository.findById(id)
-            .map(med -> {
-                med.setName(medDetails.getName());
-                med.setDosage(medDetails.getDosage());
-                med.setFrequency(medDetails.getFrequency());
-                medicationRepository.save(med);
-                return new MedicationDTO(med.getId(), med.getName(), med.getDosage(), med.getFrequency());
+            .map(medication -> {
+            	medication.setName(medDetails.getName());
+            	medication.setDosage(medDetails.getDosage());
+            	medication.setFrequency(medDetails.getFrequency());
+                medicationRepository.save(medication);
+                return new MedicationDTO(medication.getId(), medication.getUserId(), medication.getName(), medication.getDosage(), medication.getTimer(), medication.getFrequency());
             });
     }
 

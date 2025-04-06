@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mediremind.DTO.MedicationDTO;
 import com.mediremind.DTO.ReminderDTO;
+import com.mediremind.model.Medication;
 import com.mediremind.model.Reminder;
 import com.mediremind.repository.ReminderRepository;
 
@@ -22,25 +24,34 @@ public class ReminderService {
         this.reminderRepository = reminderRepository;
     }
 
-    public Page<ReminderDTO> getAllReminders(int page, int size) {
+    public Page<ReminderDTO> getAllReminders(String userId, int page, int size) {
+        if (userId != null) {
+            List<Reminder> usersById = reminderRepository.findByUserId(userId);
+            List<ReminderDTO> reminderDTOs = usersById.stream()
+                .map(reminder -> new ReminderDTO(reminder.getId(), reminder.getUserId(), reminder.getMedicationId(), reminder.getReminderTime(), reminder.isSent()))
+                .collect(Collectors.toList());
+
+            return new PageImpl<>(reminderDTOs, PageRequest.of(page, size), reminderDTOs.size());
+        }
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Reminder> reminderPage = reminderRepository.findAll(pageable);
 
-        List<ReminderDTO> ReminderDTOs = reminderPage.getContent().stream()
-            .map(reminder -> new ReminderDTO(reminder.getId(), reminder.getReminderTime(), reminder.isSent()))
-            .collect(Collectors.toList());
+        List<ReminderDTO> reminderDTOs = reminderPage.getContent().stream()
+                .map(reminder -> new ReminderDTO(reminder.getId(), reminder.getUserId(), reminder.getMedicationId(), reminder.getReminderTime(), reminder.isSent()))
+                .collect(Collectors.toList());
 
-        return new PageImpl<>(ReminderDTOs, pageable, reminderPage.getTotalElements());
+        return new PageImpl<>(reminderDTOs, PageRequest.of(page, size), reminderDTOs.size());
     }
 
     public Optional<ReminderDTO> getReminderById(String id) {
         return reminderRepository.findById(id)
-            .map(reminder -> new ReminderDTO(reminder.getId(), reminder.getReminderTime(), reminder.isSent()));
+            .map(reminder -> new ReminderDTO(reminder.getId(), reminder.getUserId(), reminder.getMedicationId(), reminder.getReminderTime(), reminder.isSent()));
     }
 
     public ReminderDTO createReminder(Reminder reminder) {
         Reminder savedReminder = reminderRepository.save(reminder);
-        return new ReminderDTO(savedReminder.getId(), savedReminder.getReminderTime(), savedReminder.isSent());
+        return new ReminderDTO(savedReminder.getId(), savedReminder.getUserId(), savedReminder.getMedicationId(), savedReminder.getReminderTime(), savedReminder.isSent());
     }
 
     public Optional<ReminderDTO> updateReminder(String id, Reminder reminderDetails) {
@@ -49,7 +60,7 @@ public class ReminderService {
                 reminder.setReminderTime(reminderDetails.getReminderTime());
                 reminder.setSent(reminderDetails.isSent());
                 reminderRepository.save(reminder);
-                return new ReminderDTO(reminder.getId(), reminder.getReminderTime(), reminder.isSent());
+                return new ReminderDTO(reminder.getId(), reminder.getUserId(), reminder.getMedicationId(), reminder.getReminderTime(), reminder.isSent());
             });
     }
 

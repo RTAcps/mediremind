@@ -1,0 +1,33 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-top: 1px solid #cc0e4e33;
+  color: #cc0e4e;
+  font-weight: bold;
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+  width: 95%;
+
+  .center {
+    text-align: center;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 0.73rem;
+    margin-top: 1.5rem;
+    
+    & path {
+        transition: fill 0.3s ease;
+        fill: #cc0e4e;
+    }
+    
+    & a:hover svg path {
+        fill: #fff;
+    }
+  }
+}

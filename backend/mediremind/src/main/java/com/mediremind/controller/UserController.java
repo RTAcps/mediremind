@@ -30,9 +30,10 @@ public class UserController {
 
     @GetMapping
     @Operation(summary = "Search all registered users")
-    public Page<UserDTO> getUsers(@RequestParam(defaultValue = "0") int page, 
+    public Page<UserDTO> getUsers(@RequestParam(required = false) String email,
+    							  @RequestParam(defaultValue = "0") int page, 
                                   @RequestParam(defaultValue = "10") int size) {
-        return userService.getAllUsers(page, size);
+        return userService.getAllUsers(email, page, size);
     }
 
     @GetMapping("/{id}")

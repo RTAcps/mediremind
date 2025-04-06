@@ -7,11 +7,14 @@ describe('authGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
-  let mockAuthService: { isAuthenticated: jest.Mock };
+  let mockAuthService: { isLoggedIn: jest.Mock, hasRole: jest.Mock };
   let mockRouter: { navigate: jest.Mock };
 
   beforeEach(() => {
-    mockAuthService = { isAuthenticated: jest.fn() };
+    mockAuthService = { 
+      isLoggedIn: jest.fn(),
+      hasRole: jest.fn()
+    };
     mockRouter = { navigate: jest.fn() };
 
     TestBed.configureTestingModule({
@@ -27,7 +30,7 @@ describe('authGuard', () => {
   });
 
   it('should allow access if authenticated', () => {
-    mockAuthService.isAuthenticated.mockReturnValue(true);
+    mockAuthService.isLoggedIn.mockReturnValue(true);
 
     const result = executeGuard({} as any, {} as any);
 
@@ -36,11 +39,35 @@ describe('authGuard', () => {
   });
 
   it('should deny access and navigate if not authenticated', () => {
-    mockAuthService.isAuthenticated.mockReturnValue(false);
+    mockAuthService.isLoggedIn.mockReturnValue(false);
 
     const result = executeGuard({} as any, {} as any);
 
     expect(result).toBeFalsy();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
+  });
+
+  it('should deny access and navigate to unauthorized if role is not sufficient', () => {
+    const mockRoute = { data: { role: 'admin' } } as any;
+    const mockState = {} as any;
+
+    mockAuthService.hasRole.mockReturnValue(false);
+
+    const result = executeGuard(mockRoute, mockState);
+
+    expect(result).toBeFalsy();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/unauthorized']);
+  });
+
+  it('should allow access if role is sufficient', () => {
+    const mockRoute = { data: { role: 'admin' } } as any;
+    const mockState = {} as any;
+
+    mockAuthService.hasRole.mockReturnValue(true);
+
+    const result = executeGuard(mockRoute, mockState);
+
+    expect(result).toBeTruthy();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 });
