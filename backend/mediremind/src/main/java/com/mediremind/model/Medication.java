@@ -1,6 +1,6 @@
 package com.mediremind.model;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,19 +14,19 @@ public class Medication {
     private String userId; 
     private String name;
     private String dosage;
-    private LocalTime time; 
+    private LocalDateTime timer; 
     private int frequency; 
 
     public Medication() {
     	this.id = NanoIdUtils.randomNanoId();
     }
 
-    public Medication(String userId, String name, String dosage, LocalTime time, int frequency) {
+    public Medication(String userId, String name, String dosage, LocalDateTime timer, int frequency) {
     	this.id = NanoIdUtils.randomNanoId();
         this.userId = userId;
         this.name = name;
         this.dosage = dosage;
-        this.time = time;
+        this.timer = timer;
         this.frequency = frequency;
     }
 
@@ -62,12 +62,12 @@ public class Medication {
 		this.dosage = dosage;
 	}
 
-	public LocalTime getTime() {
-		return time;
+	public LocalDateTime getTimer() {
+		return timer;
 	}
 
-	public void setTime(LocalTime time) {
-		this.time = time;
+	public void setTimer(LocalDateTime timer) {
+		this.timer = timer;
 	}
 
 	public int getFrequency() {
