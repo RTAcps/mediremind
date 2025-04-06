@@ -1,0 +1,85 @@
+<div class="register-container">
+    <img src="Logo_full.png" alt="Logo" class="logo" />
+  
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <h2>Cadastro</h2>
+  
+      <div>
+        <label>Nome</label>
+        <input type="text" formControlName="name" placeholder="Digite seu nome" />
+        @if (form.controls['name'].errors?.['required'] && (form.controls['name'].touched || submitted)) {
+          <div>Nome é obrigatório</div>
+        }
+      </div>
+  
+      <div>
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Digite seu email" />
+        @if (form.controls['email'].errors && (form.controls['email'].touched || submitted)) {
+          @if (form.controls['email'].errors['required']) {
+            <div>Email é obrigatório</div>
+          }
+          @if (form.controls['email'].errors['email']) {
+            <div>Email inválido</div>
+          }
+        }
+      </div>
+
+      <div>
+        <label>Tipo de usuário</label>
+        <div class="radio-group">
+          <label>
+            <input type="radio" value="Paciente" formControlName="role" />
+            Paciente
+          </label>
+          <label>
+            <input type="radio" value="Familiar" formControlName="role" />
+            Familiar
+          </label>
+          <label>
+            <input type="radio" value="Cuidador(a)" formControlName="role" />
+            Cuidador(a)
+          </label>
+        </div>
+      
+        @if (form.controls['role'].errors && (form.controls['role'].touched || submitted)) {
+          @if (form.controls['role'].errors['required']) {
+            <div>Escolha uma opção</div>
+          }
+        }
+      </div>
+  
+      <div>
+        <label>Senha</label>
+        <input type="password" formControlName="password" placeholder="Digite sua senha" />
+        @if (form.controls['password'].errors && (form.controls['password'].touched || submitted)) {
+          @if (form.controls['password'].errors['required']) {
+            <div>Senha é obrigatória</div>
+          }
+          @if (form.controls['password'].errors['pattern']) {
+            <div>A senha deve conter pelo menos 12 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.</div>
+          }
+        }
+      </div>
+  
+      <div>
+        <label>Confirmar Senha</label>
+        <input type="password" formControlName="confirmPassword" placeholder="Confirme sua senha" />
+        @if (form.errors?.['mismatch'] && (form.controls['confirmPassword'].touched || submitted)) {
+          <div>As senhas não coincidem</div>
+        }
+      </div>
+  
+      @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
+      }
+  
+      <button type="submit" [disabled]="form.invalid">Registrar</button>
+  
+      <p class="login-link">
+        Já tem uma conta?
+        <button type="button" (click)="goToLogin()">Entrar</button>
+      </p>
+    </form>
+  </div>
+  

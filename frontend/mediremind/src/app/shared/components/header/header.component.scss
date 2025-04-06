@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 10px solid #cc0e4e33;
+  color: #cc0e4e;
+
+  .logo {
+    margin-right: 1rem;
+  }
+
+  .left,
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  a {
+    color: #cc0e4e;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .right {
+    button {
+      color: #cc0e4e;
+      background: none;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+}

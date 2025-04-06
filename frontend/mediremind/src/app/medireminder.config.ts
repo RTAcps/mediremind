@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './medireminder.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from '@interceptors/auth/auth.interceptor';
 import { errorInterceptor } from '@interceptors/error/error.interceptor';
 import { loadingInterceptor } from '@interceptors/loading/loading.interceptor';
@@ -17,7 +17,8 @@ export const medireminderConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
     provideHttpClient(
-      withInterceptors(interceptors)
+      withInterceptors(interceptors),
+      withFetch()
     )
   ]
 };

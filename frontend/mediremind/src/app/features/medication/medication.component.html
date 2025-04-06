@@ -1,0 +1,20 @@
+<div class="medication-container">
+    <h2>Cadastro de Medicamentos</h2>
+  
+    <form [formGroup]="medicationForm" (ngSubmit)="onSubmit()">
+      <label>Nome do medicamento</label>
+      <input formControlName="name" type="text" placeholder="Digite o nome do medicamento" required />
+  
+      <label>Dosagem</label>
+      <input formControlName="dosage" type="text" title="Dosagem do medicamento" placeholder="Digite a dosagem do medicamento em mg ou g" required />
+  
+      <label>Horário (hora e minutos)</label>
+      <input formControlName="time" type="time" title="Horário do medicamento" placeholder="Digite o horário do medicamento" required />
+  
+      <label>Frequência (em horas)</label>
+      <input formControlName="frequency" type="number" title="Frequência do medicamento em horas" placeholder="Digite a frequência em horas" required />
+  
+      <button type="submit">{{ isEditing ? 'Atualizar' : 'Cadastrar' }}</button>
+    </form>
+  </div>
+  

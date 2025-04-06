@@ -30,9 +30,10 @@ public class MedicationController {
 
     @GetMapping
     @Operation(summary = "Search for all registered medications")
-    public Page<MedicationDTO> getMedications(@RequestParam(defaultValue = "0") int page, 
-            							      @RequestParam(defaultValue = "10") int size) {
-    	return medicationService.getAllMedications(page, size);
+    public Page<MedicationDTO> getMedications(@RequestParam(required = false) String userId,
+								              @RequestParam(defaultValue = "0") int page, 
+								              @RequestParam(defaultValue = "10") int size) {
+    	return medicationService.getAllMedications(userId, page, size);
 	}
 
     @GetMapping("/{id}")

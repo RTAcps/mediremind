@@ -1,0 +1,30 @@
+<div class="reminder-container">
+  <h2>Cadastro de Lembretes</h2>
+
+  <form [formGroup]="reminderForm" (ngSubmit)="onSubmit()">
+    <label>Medicamento</label>
+    <select
+      formControlName="medicationId"
+      required
+      title="Selecione um medicamento"
+    >
+      <option value="">Selecione um medicamento</option>
+      <option *ngFor="let med of medications" [value]="med.id">
+        {{ med.name }}
+      </option>
+    </select>
+
+    <label>Horário do lembrete</label>
+    <input
+      formControlName="reminderTime"
+      type="time"
+      required
+      title="Informe o horário do lembrete"
+      placeholder="HH:MM"
+    />
+
+    <button type="submit">
+      {{ isEditing ? "Atualizar" : "Cadastrar" }}
+    </button>
+  </form>
+</div>
