@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Medication, Reminder } from '@models/entity-interface';
-import { AuthService } from '@services/auth/auth.service';
 import { MedicationService } from '@services/medication/medication.service';
-import { ReminderService } from '@services/reminder/reminder.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -12,41 +10,34 @@ import { map, Observable } from 'rxjs';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
-  private medicationService = inject(MedicationService);
-  private reminderService = inject(ReminderService);
-  private authService = inject(AuthService);
+export class HomeComponent implements OnInit {
+  medications$ = new BehaviorSubject<Medication[]>([]);
+  reminders$ = new BehaviorSubject<Reminder[]>([]); 
+  userId = JSON.parse(sessionStorage.getItem('user') || '{}')?.id;
 
-  medications$: Observable<Medication[]>;
-  reminders$: Observable<Reminder[]>;
+  constructor(private medicationService: MedicationService) {}
 
-  constructor() {
-    const user = this.authService.currentUser;
-    // if (!user) {
-    //   throw new Error('User is not authenticated');
-    // }
-    const role = user?.role;
+  ngOnInit(): void {
+    this.loadMedications();
+    // this.loadReminders(); 
+  }
 
-    this.medications$ = this.medicationService.getAll().pipe(
-      map(medications => {
-        if (role === 'Paciente') {
-          return medications.filter(m => m.userId === user?.id);
-        }
-        console.log('medications: ', medications);
-        
-        return medications;
-      })
-    );
+  loadMedications(): void {
+      this.medicationService.getByUserId(this.userId).subscribe((data) => {
+        this.medications$.next(data.content);
+      });
+    }
 
-    this.reminders$ = this.reminderService.getAll().pipe(
-      map(reminders => {
-        if (role === 'Paciente') {
-          return reminders.filter(r => r.userId === user?.id);
-        }
-        console.log('reminders: ', reminders);
-        
-        return reminders;
-      })
-    );
+  editMedication(med: Medication): void {
+    console.log('Editar:', med);
+    // this.dialog.open(EditMedicationModalComponent, { data: med });
+  }
+
+  deleteMedication(id: string): void {
+    if (confirm('Tem certeza que deseja remover este medicamento?')) {
+      this.medicationService.delete(id).subscribe(() => {
+        this.loadMedications();
+      });
+    }
   }
 }

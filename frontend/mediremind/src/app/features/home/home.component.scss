@@ -45,6 +45,26 @@
 
         li {
           margin-bottom: 0.75rem;
+          color: #3a3a3a;
+          list-style: none;
+
+          .medication-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            button {
+              color: #cc0e4e;
+              background: none;
+              border: none;
+              font-weight: bold;
+              cursor: pointer;
+              
+              &:hover {
+                color: #9f979a;
+              }
+            }
+          }
         }
       }
     }
