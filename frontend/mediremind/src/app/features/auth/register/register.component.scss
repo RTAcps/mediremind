@@ -31,6 +31,14 @@
       input {
         margin: 0 1rem;
       }
+
+      & input[type="radio"]:checked + span {
+        color: #cc0e4e;
+      }
+      
+      & input[type="radio"] {
+        accent-color: #cc0e4e;
+      }
     }
   }
 

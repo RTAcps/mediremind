@@ -26,7 +26,7 @@ export class RegisterComponent {
       {
         name: ['', Validators.required, Validators.minLength(10)],
         email: ['', [Validators.required, Validators.email]],
-        role: ['', Validators.required],
+        role: ['Paciente', Validators.required],
         password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/)]],
         confirmPassword: ['', Validators.required],
       },
