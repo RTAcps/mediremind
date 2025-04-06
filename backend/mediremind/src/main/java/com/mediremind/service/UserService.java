@@ -22,25 +22,35 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Page<UserDTO> getAllUsers(int page, int size) {
+    public Page<UserDTO> getAllUsers(String email, int page, int size) {
+        if (email != null && !email.trim().isEmpty()) {
+            List<User> usersByEmail = userRepository.findByEmail(email);
+            List<UserDTO> userDTOs = usersByEmail.stream()
+                .map(user -> new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole()))
+                .collect(Collectors.toList());
+
+            return new PageImpl<>(userDTOs, PageRequest.of(page, size), userDTOs.size());
+        }
+
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = userRepository.findAll(pageable);
 
         List<UserDTO> userDTOs = userPage.getContent().stream()
-            .map(user -> new UserDTO(user.getId(), user.getName(), user.getEmail()))
+            .map(user -> new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole()))
             .collect(Collectors.toList());
 
-        return new PageImpl<>(userDTOs, pageable, userPage.getTotalElements());
+        return new PageImpl<>(userDTOs, PageRequest.of(page, size), userDTOs.size());
     }
+
 
     public Optional<UserDTO> getUserById(String id) {
         return userRepository.findById(id)
-            .map(user -> new UserDTO(user.getId(), user.getName(), user.getEmail()));
+            .map(user -> new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole()));
     }
 
     public UserDTO createUser(User user) {
         User savedUser = userRepository.save(user);
-        return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail());
+        return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), user.getRole());
     }
 
     public Optional<UserDTO> updateUser(String id, User userDetails) {
@@ -50,7 +60,7 @@ public class UserService {
                 user.setEmail(userDetails.getEmail());
                 user.setRole(userDetails.getRole());
                 userRepository.save(user);
-                return new UserDTO(user.getId(), user.getName(), user.getEmail());
+                return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole());
             });
     }
 
