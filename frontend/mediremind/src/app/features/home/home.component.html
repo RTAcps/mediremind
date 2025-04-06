@@ -1,0 +1,30 @@
+<div class="home-container">
+    <h1>Medicamentos para hoje</h1>
+    <ng-container *ngIf="medications$ | async as medications">
+      <div *ngIf="medications.length; else noMeds">
+        <ul>
+          <li *ngFor="let medication of medications">
+            <strong>{{ medication.name }}</strong> - Dosagem: {{ medication.dosage }}, Frequência: {{ medication.frequency }}
+          </li>
+        </ul>
+      </div>
+      <ng-template #noMeds>
+        <p>Nenhum medicamento encontrado.</p>
+      </ng-template>
+    </ng-container>
+  
+    <h2>Lembretes para hoje</h2>
+    <ng-container *ngIf="reminders$ | async as reminders">
+      <div *ngIf="reminders.length; else noReminders">
+        <ul>
+          <li *ngFor="let reminder of reminders">
+            <strong>Medicamento:</strong> {{ reminder.medicationId }} – Horário: {{ reminder.dateTime | date:'shortTime' }}
+          </li>
+        </ul>
+      </div>
+      <ng-template #noReminders>
+        <p>Nenhum lembrete encontrado.</p>
+      </ng-template>
+    </ng-container>
+  </div>
+  
