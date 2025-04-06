@@ -4,9 +4,8 @@ import { User } from '@models/entity-interface';
 import { BaseService } from '@services/base/base.service';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService extends BaseService<User> {
   protected override endpoint = 'users';
@@ -14,6 +13,9 @@ export class UserService extends BaseService<User> {
 
   getByEmail(email: string): Observable<{ content: User[] }> {
     const params = new HttpParams().set('email', email);
-    return this.http.get<{ content: User[] }>(`${this.baseUrl}/${this.endpoint}`, { params });
+    return this.http.get<{ content: User[] }>(
+      `${this.baseUrl}/${this.endpoint}`,
+      { params }
+    );
   }
 }
