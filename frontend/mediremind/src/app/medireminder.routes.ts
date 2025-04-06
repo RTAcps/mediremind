@@ -28,14 +28,14 @@ export const routes: Routes = [
 //       import('./features/users/users.component').then((m) => m.UsersComponent),
 //     canActivate: [authGuard],
 //   },
-//   {
-//     path: 'medications',
-//     loadComponent: () =>
-//       import('./features/medications/medications.component').then(
-//         (m) => m.MedicationsComponent
-//       ),
-//     canActivate: [authGuard],
-//   },
+  {
+    path: 'medication',
+    loadComponent: () =>
+      import('./features/medication/medication.component').then(
+        (m) => m.MedicationComponent
+      ),
+    canActivate: [authGuard],
+  },
 //   {
 //     path: 'reminders',
 //     loadComponent: () =>

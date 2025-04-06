@@ -13,6 +13,7 @@ export interface User extends IEntity {
 export interface Medication extends IEntity {
   name: string;
   dosage: string;
+  timer: string;
   frequency: string;
   userId: string;
 }
